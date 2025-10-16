@@ -1,3 +1,3 @@
 this is an Alternate Reality Game website. 
 
-https://rojz23.github.io/SecondLives.html
+<a href="SecondLives.html">Link to Second Lives Corp website </a>
