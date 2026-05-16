@@ -148,6 +148,52 @@
             color: var(--accent-color);
             box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
         }
+        .welcome-message {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 0, 60, 0.05) 100%);
+    border: 1px solid rgba(255, 0, 60, 0.3);
+    border-radius: 8px;
+    padding: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.1);
+}
+
+.welcome-message::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent-color), transparent);
+}
+
+.message-quote {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+.quote-mark {
+    color: var(--accent-color);
+    font-size: 2rem;
+    font-family: serif;
+    opacity: 0.6;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.quote-mark:last-child {
+    margin-left: 5px;
+    vertical-align: bottom;
+}
+
+.glitch-text {
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+}
         
         .page {
             display: none;
@@ -629,52 +675,7 @@
                 padding: 3px 8px;
             }
         }
-        .welcome-message {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 0, 60, 0.05) 100%);
-    border: 1px solid rgba(255, 0, 60, 0.3);
-    border-radius: 8px;
-    padding: 40px;
-    margin-bottom: 40px;
-    position: relative;
-    box-shadow: 0 0 20px rgba(255, 0, 60, 0.1);
-}
-
-.welcome-message::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--accent-color), transparent);
-}
-
-.message-quote {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9);
-    font-style: italic;
-}
-
-.quote-mark {
-    color: var(--accent-color);
-    font-size: 2rem;
-    font-family: serif;
-    opacity: 0.6;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.quote-mark:last-child {
-    margin-left: 5px;
-    vertical-align: bottom;
-}
-
-.glitch-text {
-    color: var(--accent-color);
-    font-weight: bold;
-    display: inline-block;
-}
+        
     </style>
 </head>
 <body>
