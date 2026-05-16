@@ -187,6 +187,7 @@
             border-radius: 50%;
             position: relative;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         
         .play-btn::before {
@@ -200,6 +201,10 @@
             border-top: 6px solid transparent;
             border-bottom: 6px solid transparent;
             border-left: 10px solid var(--bg-color);
+        }
+        
+        .play-btn.playing {
+            background-color: #00ff00;
         }
         
         .transcript {
@@ -646,7 +651,7 @@
             <div id="home" class="page active">
                 <div class="audio-log">
                     <div class="audio-title">
-                        <span class="play-btn"></span>
+                        <span class="play-btn" data-audio="0"></span>
                         Latest Transmission - Kira Daniels
                     </div>
                     <div class="transcript">
@@ -674,7 +679,7 @@ Trust no one. <span class="secret-highlight">Verify<span class="secret-button" d
             <div id="audio" class="page">
                 <div class="audio-log">
                     <div class="audio-title">
-                        <span class="play-btn"></span>
+                        <span class="play-btn" data-audio="0"></span>
                         Audio Log #01 – Kira Daniels (2014)
                     </div>
                     <div class="transcript">
@@ -690,7 +695,7 @@ I don't have the whole picture yet. But I'm not lettin' go until I do."
                 
                 <div class="audio-log">
                     <div class="audio-title">
-                        <span class="play-btn"></span>
+                        <span class="play-btn" data-audio="1"></span>
                         Audio Log #02 – Kira Daniels (2014)
                     </div>
                     <div class="transcript">
@@ -706,7 +711,7 @@ This is Kira Daniels. Still reporting."
                 
                 <div class="audio-log">
                     <div class="audio-title">
-                        <span class="play-btn"></span>
+                        <span class="play-btn" data-audio="2"></span>
                         Audio Log #03 – Kira Daniels (2014)
                     </div>
                     <div class="transcript">
@@ -881,7 +886,7 @@ Our last dead drop location was compromised, but we managed to recover some <spa
                         <div id="finance-content" class="file-content">
 JVUMPKLUAPHS MPUHUJPHS SLKNLY MYHNTLUA - UVCH JYLZA ZLJAVY
 
-Aopz myhntlua hwwlhyz av zovd zbkklu ylhssvjhapvuz huk ltlynlujf ayhuzmlyz khalk zovyasf hmaly aol pujpklua. Paltpglk luayplz spza whftluaz av buuhtlk "Nvclyutlua Sphpzvu" hjjvbuaz, mshnnlk hz "jvumpkluaphs vwlyhapvuz." Zlclyhs slknly spulz ohcl illu zjybiilk, iba PK vmmzlaz ylthpu wvpuapun av lealyuhs hnlujplz huk wypchal jvuayhjavyz. Thynpu huuvahapvuz zbnnlza mbukz dlyl kpclyalk av jvcly mhjpspaf kljvuahtpuhapvu, yhwpk zljbypaf jvuayhjaz, huk bukpzjsvzlk svnpzapjhs zbwwvya. H ohukdypaalu hkklukbt uvalz hjjlslyhalk clukvy whftluaz huk hu hbaovypghapvu jvkl aoha kvlz uva hwwlhy pu zahukhyk jvywvyhal slknlyz. Vaoly luayplz ylmlylujl ayhuzwvyahapvu vm zljbylk thalyphs huk 'altwvyhyf jbzavkf' johynlz. Aol myhntlua lukz dpao h zahtwlk uvahapvu: "WBYNL HMALY AYHUZMLY" huk h khal mplsk aoha ohz illu ylkhjalk. Aol whaalyu pukpjhalz ltlynlujf zwlukpun mvssvdlk if yhwpk khah zhupapghapvu, zbnnlzapun haaltwaz av opkl aol zvbyjlz huk yljpwpluaz vm shynl kpzibyzltluaz pu aol khfz pttlkphalsf hmaly aol ishjrvba.
+Aopz myhntlua hwwlhyz av zovd zbkklu ylhssvjhapvuz huk ltlynlujf ayhuzmlyz khalk zovyasf hmaly aol pujpklua. Paltpglk luayplz spza whftluaz av buuhtlk "Nvclyutlua Sphpzvu" hjjvbuaz, mshnnlk hz "jvumpkluaphs vwlyhapvuz." Zlclyhs slknly spulz ohcl illu zjybiilk, iba PK vmmzlaz ylthpu wvpuapun av lealyuhs hnlujplz huk wypchal jvuayhjavyz. Thynpu huuvahapvuz zbnnlza mbukz dlyl kpclyalk av jvcly mhjpspaf kljvuahtpuhapvu, yhwpk zljbypaf jvuayhjaz, huk bukpzjsvzlk svnpzapjhs zbwwvya. H ohukdypaalu hkklukbt uvalz hjjlslyhalk clukvy whftluaz huk hu hbaovypghapvu jvkl aoha kvlz uva hwwlhy pu zahukhyk jvywvyhal slknlyz. Vaoly luayplz ylmlylujl ayhuzwvyahapvu vm zljbylk thalyphs huk 'altwvyhyf jbzavkf' johynlz. Aol myhntlua lukz dpao h zahtwlk uvahapvu: "WBYNL HMALY AYHUZMLY" huk h khal mplsk aoha ohz illu ylkhjalk. Aol whaalyu pukpjhaalz ltlynlujf zwlukpun mvssvdlk if yhwpk khah zhupapghapvu, zbnnlzapun haaltwaz av opkl aol zvbyjlz huk yljpwpluaz vm shynl kpzibyzltluaz pu aol khfz pttlkphasf hmaly aol ishjrvba.
                         </div>
                     </li>
                     
@@ -890,7 +895,7 @@ Aopz myhntlua hwwlhyz av zovd zbkklu ylhssvjhapvuz huk ltlynlujf ayhuzmlyz khalk
                         <div id="recovery-content" class="file-content">
 YLJVCLYF & JHZBHSAF YLWVYA - UVCH JYLZA JPAPGLUYF
 
-Wbispj zahaltluaz pzzblk pu aol dllrz hmaly aol pujpklua jshptlk h jhahzayvwopj kpzlhzl zdlwa ylzpkluaphs zljavyz dpao yhwpk mhahspaplz. Vmmpjphs jhzbhsaf spzaz pzzblk av aol wylzz dlyl iyplm, olhcpsf ylkhjalk, huk ltwohzpglk jvuahputlua tlhzbylz huk kljvuahtpuhapvu wyvavjvsz. Pualyuhs puclzapnhapvu uvalz, ovdlcly, pukpjhal aolyl hyl uv clypmphisl shi ylzbsaz haahjolk av aolzl jshptz. Zlwhyhal dpaulzz zahaltluaz yljvyklk pu hyjopclk pualycpld mpslz klzjypil mvyjlk lchjbhapvuz, zlhslk wlyptlalyz, huk hjjlslyhalk ibyphsz jvukbjalk bukly zaypja nbhyk. Ylnpzayf luayplz zovd tbsapwsl ylzpkluaz thyrlk hz kljlhzlk huk aolu huuvahalk hz 'buclypmplk' khfz shaly, zbnnlzapun hktpupzayhapcl jvumbzpvu vy klspilyhal vimbzjhapvu. Hu haahjolk spul palt ylmlylujlz jyhalz thyrlk 'ipv-jvuahputlua' zopwwlk vmmzpal if jvuayhjavyz dovzl clukvy PKz kv uva thajo jvywvyhal ylnpzayplz.
+Wbispj zahaltluaz pzzblk pu aol dllrz hmaly aol pujpklua jshptlk j hhazayvwopj kpzlhzl zdlwa ylzpkluaphs zljavyz dpao yhwpk mhahspaplz. Vmmpjphs jhzbhsaf spzaz pzzblk av aol wylzz dlyl iyplm, olhcpsf ylkhjalk, huk ltwohzpglk jvuahputlua tlhzbylz huk kljvuahtpuhapvu wyvavjvsz. Pualyuhs puclzapnhapvu uvalz, ovdlcly, pukpjhaal aolyl hyl uv clypmphisl shi ylzbsaz haahjolk av aolzl jshptz. Zlwhyhal dpaulzz zahaltluaz yljvyklk pu hyjopclk pualycpld mpslz klzjypil mvyjlk lchjbhapvuz, zlhslk wlyptlalyz, huk hjjlslyhalk ibyphsz jvukbjalk bukly zaypja nbhyk. Ylnpzayf luayplz zovd tbsapwsl ylzpkluaz thyrlk hz kljlhzlk huk aolu huuvahalk hz 'buclypmplk' khfz shaly, zbnnlzapun hktpupzayhapcl jvumbzpvu vy klspilyhal vimbzjhapvu. Hu haahjolk spul palt ylmlylujlz jyhalz thyrlk 'ipv-jvuahputlua' zopwwlk vmmzpal if jvuayhjavyz dovzl clukvy PKz kv uva thajo jvywvyhal ylnpzayplz.
                         </div>
                     </li>
                     
@@ -899,7 +904,7 @@ Wbispj zahaltluaz pzzblk pu aol dllrz hmaly aol pujpklua jshptlk h jhahzayvwopj 
                         <div id="protest-content" class="file-content">
 WYVALZA PUJPKLUA MPSL - WBISPJ AYHUZWVYA AYBJR JVSSPZPVU
 
-H ylcpld vm tbupjpwhs ayhmmpj svnz, wyvalza yvbapun, huk lfldpaulzz alzaptvuf yljvuzaybjaz h jyvdklk kltvuzayhapvu yvbal pualyzljapun dpao h tbupjpwhs ayhuzwvya aybjr'z zjolkbslk shul. Aol clopjsl iylhjolk altwvyhyf ihyypjhklz, jvsspkpun dpao tbsapwsl jhyz huk h thrlzopma zahnl. Zlcryhs mhahspaplz dlyl ylwvyalk vu zjlul, pujsbkpun opno-wyvmpsl hjapcpzaz huk mhtpsf tltilyz hzzvjphalk dpao jvywvyhal slhklyzopw. Aol vmmpjphs ylwvya haaypibalz aol jvsspzpvu av kypcly lyyvy huk tljohupjhs mhpsbyl. Hsalyuhal mplsk ylwvyaz hsslnl shal ylyvbapun vyklyz, pujvuzpzalua NWZ svnz, huk klshflk ltlynlujf ylzwvuzl aptlz. Pu aol hmalythao shd lumvyjltlua puzapabalk jbymldz, jvumpzjhalk vu-zpal mvvahnl, huk ylzaypjalk wylzz hjjlzz. Zlcryhs puklwluklua cpklvnyhwolyz ylwvya aoha aolpy yljvykpunz dlyl zlpglk huk shaly ylabyolk dpao rlf myhtlz yltvclk.
+H ylcpld vm tbupjpwhs ayhmmpj svnz, wyvalza yvbapun, huk lfldpaulzz alzaptvuf yljvuzaybjaz h jyvdklk kltvuzayhapvu yvbal pualyzljapun dpao h tbupjpwhs ayhuzwvya aybjr'z zjolkbslk shul. Aol clopjsl iylhjolk altwvyhyf ihyypjhklz, jvsspkpun dpao tbsapwsl jhyz huk h thrlzopma zahnl. Zlcryhs mhahspaplz dlyl ylwvyalk vu zjlul, pujsbkpun opno-wyvmpsl hjapcpzaz huk mhtpsf tltilyz hzzvjphalk dpao jvywvyhal slhklyzopw. Aol vmmpjphs ylwvya haaypibalz aol jvsspzpvu av kypcly lyyvy huk tljohupjhs mhpsbyl. Hsalyuhal mplsk ylwvyaz hsslnl shal ylyvbapun vyklyz, pujvuzpzaluv NWZ svnz, huk klshflk ltlynlujf ylzwvuzl aptlz. Pu aol hmalythao shd lumvyjltlua puzapabalk jbymldz, jvumpzjhalk vu-zpal mvvahnl, huk ylzaypjalk wylzz hjjlzz. Zlcryhs puklwluklua cpklvnyhwolyz ylwvya aoha aolpy yljvykpunz dlyl zlpglk huk shaly ylabyolk dpao rlf myhtlz yltvclk.
                         </div>
                     </li>
                     
@@ -908,7 +913,7 @@ H ylcpld vm tbupjpwhs ayhmmpj svnz, wyvalza yvbapun, huk lfldpaulzz alzaptvuf yl
                         <div id="secret-content" class="file-content">
 AMKZMB UMUW - JWUJML AMKBWZA & KQBG ABIBMUMVBA
 
-Amdmzit xwab-qvkqlmvb kwuucvqycéa lwkcumvb lmkqaqwva bw lmuwtqap amtmkbml abzckbczma ivl lmktizm amkbqwva wn bpm kqbg 'cvbmvijtm' nwz xcjtqk cam. Wnnqkqit umaaioqvo nziuml lmuwtqbqwva ia vmkmaaizg bw pitb iv ittmoml axzmilqvo xibpwomv ivl bw xzwbmkb vmqopjwzqvo lqabzqkba. Xzwkczmumvb zmkwzla apwe zixql ncmt zmycqaqbqwva, pmidg lmuwtqbqwv kwvbzikba, ivl zmycqaqbqwv wzlmza nwz wzlqvivkm axmkqitqaba. Xzqdibm vwbma ibbikpml bw bpm umuw ycmabqwv bpm tiks wn qvlmxmvlmvb mvdqzwvumvbit bmabqvo ivl mfxzmaa kwvkmzv bpib lmuwtqbqwv wzlmza emzm qaacml jmnwzm ivg bpqzl-xizbg dmzqnqkibqwv. Bpm lmuwtqbqwv vizzibqdm kwvdmvqmvbtg mtquqvibml xpgaqkit bzikma ivl tquqbml bpm eqvlwe nwz mfbmzvit qvaxmkbqwv. Bpm zmactb eia i zixql mziaczm wn xpgaqkit mdqlmvkm tqvsml bw bpm xzm-qvkqlmvb wxmzibqwva eqbpqv bpm bizombml amkbwza.
+Amdmzit xwab-qvkqlmvb kwuucvqycéa lwkcumvb lmkqaqwva bw lmuwtqap amtmkbml abzckbctz ivl lmktizm amkbqwva wn bpm kqbg 'cvbmvijtm' nwz xcjtqk cam. Wnnqkqit umaaioqvo nziuml lmuwtqbqwva ia vmkmaaizg bw pitb iv ittmoml axzmilqvo xibpwomv ivl bw xzwbmkb vmqopjwzqvo lqabzqkba. Xzwkczkumvb zmkwzla apwe zixql ncmt zmycqaqbqwva, pmidg lmuwtqbqwv kwvbzikba, ivl zmycqaqbqwv wzlmza nwz wzlqvivkm axmkqitqaba. Xzqdibm vwbma ibbikpml bw bpm umuw ycmabqwv bpm tiks wn qvlmxlmvbmv mvdqzwvumvbit bmabqvo ivl mfxzmaa kwvkmzv bpib lmuwtqbqwv wzlmza emzm qaacml jmnwzm ivg bpqkl-xizbg dmzqnqkibqwv. Bpm lmuwtqbqwv vizzibqdm kwvdmvqmvbtg mtquqvibml xpgaqkit bzikma ivl tquqbml bpm eqvlwe nwz mfbmzvit qvaxmkbqwv. Bpm zmactb eia i zixql mziaczm wn xpgaqkit mdqlkvkm tqvsml bw bpm xzm-qvkqlmvb wxmzibqwva eqbpqv bpm bizombml amkbwza.
                         </div>
                     </li>
                 </ul>
@@ -939,6 +944,11 @@ Amdmzit xwab-qvkqlmvb kwuucvqycéa lwkcumvb lmkqaqwva bw lmuwtqap amtmkbml abzck
         <button class="image-modal-close" id="image-modal-close">×</button>
         <img class="image-modal-content" id="image-modal-img" src="">
     </div>
+
+    <!-- Audio Elements -->
+    <audio id="audio0" src="Kira_AudioLog1.mp3" preload="auto"></audio>
+    <audio id="audio1" src="Kira_AudioLog2.mp3" preload="auto"></audio>
+    <audio id="audio2" src="Kira_AudioLog3.mp3" preload="auto"></audio>
 
     <script>
         // Navigation functionality
@@ -971,23 +981,71 @@ Amdmzit xwab-qvkqlmvb kwuucvqycéa lwkcumvb lmkqaqwva bw lmuwtqap amtmkbml abzck
             });
         });
         
-        // Play button functionality
+        // Play button functionality for audio logs
         const playButtons = document.querySelectorAll('.play-btn');
+        
+        // Track currently playing audio
+        let currentAudio = null;
+        let currentButton = null;
+        
         playButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const audioLog = button.closest('.audio-log');
-                const transcript = audioLog.querySelector('.transcript');
+                const audioIndex = button.getAttribute('data-audio');
+                const audio = document.getElementById(`audio${audioIndex}`);
                 
-                // Visual feedback for "playing" audio
-                button.style.backgroundColor = '#00ff00';
-                transcript.style.color = 'var(--accent-color)';
-                
-                setTimeout(() => {
-                    button.style.backgroundColor = '';
-                    transcript.style.color = '';
-                }, 3000);
+                // If this audio is already playing, stop it
+                if (currentAudio === audio && !audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    button.classList.remove('playing');
+                    currentAudio = null;
+                    currentButton = null;
+                } 
+                // If different audio is playing, stop it and play this one
+                else if (currentAudio && currentAudio !== audio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    if (currentButton) {
+                        currentButton.classList.remove('playing');
+                    }
+                    playAudio(audio, button);
+                }
+                // Play new audio
+                else {
+                    playAudio(audio, button);
+                }
             });
         });
+        
+        function playAudio(audio, button) {
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+                alert('Could not play audio file. Make sure ' + audio.src.split('/').pop() + ' exists in the same folder.');
+            });
+            
+            button.classList.add('playing');
+            currentAudio = audio;
+            currentButton = button;
+            
+            // Reset button style when audio ends
+            audio.onended = () => {
+                button.classList.remove('playing');
+                if (currentAudio === audio) {
+                    currentAudio = null;
+                    currentButton = null;
+                }
+            };
+            
+            // Handle audio errors
+            audio.onerror = () => {
+                console.error('Audio file not found:', audio.src);
+                button.classList.remove('playing');
+                if (currentAudio === audio) {
+                    currentAudio = null;
+                    currentButton = null;
+                }
+            };
+        }
         
         // Random glitch effect on text elements
         setInterval(() => {
