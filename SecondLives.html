@@ -1136,7 +1136,7 @@
             // Video autoplay with sound for both videos
             const videos = document.querySelectorAll('video');
             videos.forEach(video => {
-                video.muted = false; // Ensure videos are not muted
+                video.muted = true; // Ensure videos are not muted
                 
                 // Try to play with sound (may require user interaction on some browsers)
                 video.play().catch(error => {
