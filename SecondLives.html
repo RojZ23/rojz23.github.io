@@ -1039,6 +1039,10 @@
                 <h3 style="text-align: center; margin-bottom: 30px; color: var(--secondary);">Employee Login</h3>
                 <form id="employeeLoginForm">
                     <div class="form-group">
+                        <label for="employeeUsername">Username</label>
+                        <input type="text" id="employeeUsername" placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
                         <label for="employeeId">Employee ID</label>
                         <input type="text" id="employeeId" placeholder="Enter your employee ID">
                     </div>
@@ -1147,34 +1151,37 @@
             });
         });
         
-        // Employee login handler
+        // Employee login handler with username validation
         function handleEmployeeLogin() {
+            const username = document.getElementById('employeeUsername').value;
             const employeeId = document.getElementById('employeeId').value;
             const password = document.getElementById('password').value;
             const accessLevel = document.getElementById('accessLevel').value;
             
             // Simple validation
-            if (!employeeId || !password) {
-                alert('Please enter both Employee ID and Password');
+            if (!username || !employeeId || !password) {
+                alert('Please enter Username, Employee ID, and Password');
                 return;
             }
             
-            // Check credentials based on access level
+            // Define valid credentials per access level (username, employeeId, password)
+            const credentials = {
+                '1': { username: 'basic.user', id: 'SLC1001', password: 'access1' },
+                '2': { username: 'research.tech', id: 'SLC2002', password: 'research2' },
+                '3': { username: 'senior.scientist', id: 'SLC3003', password: 'classified3' },
+                '4': { username: 'admin.kain', id: 'SLC9000', password: 'adminSecure4' }
+            };
+            
+            const cred = credentials[accessLevel];
             let isValid = false;
             
-            switch(accessLevel) {
-                case '1':
-                    isValid = (password === 'access1' || password === 'basic2024');
-                    break;
-                case '2':
-                    isValid = (password === 'research2' || password === 'intermediateSEC');
-                    break;
-                case '3':
-                    isValid = (password === 'classified3' || password === 'advNCrest2024');
-                    break;
-                case '4':
-                    isValid = (password === 'adminSecure4' || password === 'SLadmin2024!');
-                    break;
+            if (cred) {
+                // Check username (case-insensitive), employee ID (case-sensitive), and password (case-sensitive)
+                const usernameMatch = username.toLowerCase() === cred.username.toLowerCase();
+                const idMatch = employeeId === cred.id;
+                const passwordMatch = password === cred.password;
+                
+                isValid = usernameMatch && idMatch && passwordMatch;
             }
             
             if (isValid) {
@@ -1198,7 +1205,7 @@
                 // Scroll to top
                 window.scrollTo(0, 0);
             } else {
-                alert('Invalid credentials for the selected access level. Please try again.');
+                alert('Invalid credentials for the selected access level. Please check your Username, Employee ID, and Password.');
             }
         }
         
@@ -1215,6 +1222,7 @@
             document.getElementById('archiveSection').style.display = 'none';
             
             // Clear the login form
+            document.getElementById('employeeUsername').value = '';
             document.getElementById('employeeId').value = '';
             document.getElementById('password').value = '';
             document.getElementById('accessLevel').value = '1';
