@@ -1518,8 +1518,7 @@
     // ── VIDEO AUTOPLAY ──
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('video').forEach(v => {
-            v.muted = false;
-            v.play().catch(() => { v.controls = true; });
+            v.controls = true;
         });
     });
 
