@@ -15,4 +15,5 @@
   <p style="margin-top: 16px;"><strong style="color: #ffcc66;">[VOICE CAST]</strong></p>
   <p>• Fahad Fade — voice of Asher Vance </p>
   <p>• Katie Otten — voice of Kira Daniels</p>
+  <p>• Justice Margowski — voice of General Nathaniel Keir </p>
 </div>
