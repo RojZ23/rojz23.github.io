@@ -1,16 +1,17 @@
-this is an Alternate Reality Game website. Everything is Fictional. Not real at all. 
 
-the following are links to ARG puzzles:
+<div style="font-family: monospace; color: #d9d9d9; background: #0b0b0f; padding: 20px; border: 1px solid #333;">
+  <p><strong style="color: #ff4d4d;">[NOTICE]</strong> This is an <span style="color: #7df9ff;">Alternate Reality Game</span> website. Everything is fictional. Not real at all.</p>
 
-<a href="SecondLives.html">Second Lives Corp website</a><br>
+  <p style="margin-top: 16px;"><strong style="color: #7df9ff;">[PUZZLE ACCESS]</strong></p>
+  <p>
+    <a href="SecondLives.html" style="color: #7df9ff; text-decoration: none;">&gt; Second Lives Corp website</a><br>
+    <a href="BreachUnit.html" style="color: #7df9ff; text-decoration: none;">&gt; Breach Unit</a>
+  </p>
 
-<a href="BreachUnit.html">Breach Unit</a>
+  <p style="margin-top: 16px;"><strong style="color: #ffcc66;">[CREW FILE]</strong></p>
+  <p>creator, writer, and ARG director:</p>
+  <p>• Rojina Z. <span style="color: #888;">(Dead Society)</span></p>
 
-creator, writer, and ARG director:
-
-• Rojina Z. (Dead Society)
-
-Star Voice actors:
-
-• Katie Otten — voice of Kira Daniels
-
+  <p style="margin-top: 16px;"><strong style="color: #ffcc66;">[VOICE CAST]</strong></p>
+  <p>• Katie Otten — voice of Kira Daniels</p>
+</div>
