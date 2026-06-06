@@ -5,9 +5,9 @@ this is an Alternate Reality Game website. Everything is Fictional. Not real at 
 
 creator, writer, and ARG director:
 
-Rojina Z. (Dead Society)
+• Rojina Z. (Dead Society)
 
 Star Voice actors:
 
-Katie Otten — voice of Kira Daniels
+• Katie Otten — voice of Kira Daniels
 
