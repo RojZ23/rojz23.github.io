@@ -4,8 +4,8 @@
 
   <p style="margin-top: 16px;"><strong style="color: #7df9ff;">[PUZZLE ACCESS]</strong></p>
   <p>
-    <a href="SecondLives.html" style="color: #7df9ff; text-decoration: none;">&gt; Second Lives Corp website</a><br>
-    <a href="BreachUnit.html" style="color: #7df9ff; text-decoration: none;">&gt; Breach Unit</a>
+    <a href="https://rojz23.github.io/SecondLives.html" style="color: #7df9ff; text-decoration: none;">&gt; Second Lives Corp website</a><br>
+    <a href="https://rojz23.github.io/BreachUnit.html" style="color: #7df9ff; text-decoration: none;">&gt; Breach Unit</a>
   </p>
 
   <p style="margin-top: 16px;"><strong style="color: #ffcc66;">[CREW FILE]</strong></p>
