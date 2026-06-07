@@ -807,6 +807,51 @@
         .warn-text { font-size: 0.8rem; line-height: 1.75; color: var(--text-dim); }
         .warn-text strong { color: var(--text-bright); font-family: var(--sans); letter-spacing: 1px; }
 
+
+        /* ── DOCUMENT LOCKS ── */
+        .doc-body-wrap { position: relative; }
+
+        .doc-lock {
+            position: absolute; inset: 0;
+            background: rgba(5,5,7,0.97);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 14px; padding: 28px;
+            transition: opacity 0.35s;
+        }
+        .doc-lock.unlocked { opacity: 0; pointer-events: none; }
+
+        .lock-label {
+            font-size: 0.62rem; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-dim);
+        }
+        .lock-row { display: flex; gap: 8px; width: 100%; max-width: 260px; }
+
+        .lock-input {
+            flex: 1; background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom-color: var(--red);
+            color: var(--text-bright);
+            padding: 9px 12px; font-family: var(--display);
+            font-size: 1.3rem; letter-spacing: 5px;
+            text-align: center; outline: none;
+        }
+        .lock-input:focus { box-shadow: 0 0 10px var(--red-glow); }
+
+        .lock-btn {
+            background: transparent; border: 1px solid var(--red);
+            color: var(--red); padding: 9px 14px;
+            font-family: var(--sans); font-size: 0.65rem;
+            font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer;
+        }
+        .lock-btn:hover { background: var(--red-dim); }
+
+        .lock-err {
+            font-size: 0.68rem; color: var(--red);
+            letter-spacing: 1px; opacity: 0; transition: opacity 0.2s;
+        }
+        .lock-err.show { opacity: 1; }
         /* ── RESPONSIVE ── */
         @media (max-width: 640px) {
             .site-title { font-size: 2.2rem; letter-spacing: 3px; }
@@ -952,13 +997,22 @@
             <div id="documents" class="page">
                 <div class="section-label">Recovered Files</div>
 
-                <div class="doc-block">
-                    <div class="doc-header">
-                        <div class="doc-header-icon"></div>
-                        <div class="doc-header-title">Classified Memo — 2010</div>
-                        <div class="doc-header-stamp">LEVEL 4 CLEARANCE</div>
+                <div class="doc-block" data-password="2010">
+                <div class="doc-header">
+                    <div class="doc-header-icon"></div>
+                    <div class="doc-header-title">Classified Memo — 2010</div>
+                    <div class="doc-header-stamp">LEVEL 4 CLEARANCE</div>
+                </div>
+                <div class="doc-body-wrap">
+                <div class="doc-lock">
+                    <div class="lock-label">Level 4 Clearance Required</div>
+                    <div class="lock-row">
+                        <input class="lock-input" type="password" placeholder="_ _ _ _" maxlength="10">
+                        <button class="lock-btn">Access</button>
                     </div>
-                    <div class="doc-body">INTERNAL MEMORANDUM
+                    <div class="lock-err">Access denied</div>
+                </div>
+                <div class="doc-body">INTERNAL MEMORANDUM
 SECOND LIVES CORPORATION
 CLASSIFIED - LEVEL 4 CLEARANCE REQUIRED
 
@@ -990,15 +1044,25 @@ Second Lives Corporation
 [END OF DOCUMENT]
 
 Note: Circulated briefly online before erasure. Possibly connected to Nova Crest disaster.</div>
+</div>
                 </div>
 
-                <div class="doc-block">
-                    <div class="doc-header">
-                        <div class="doc-header-icon"></div>
-                        <div class="doc-header-title">Internal Communication</div>
-                        <div class="doc-header-stamp">APRIL 2010</div>
-                    </div>
-                    <div class="doc-body">FROM: Dr. Allen Shuffler
+                <div class="doc-block" data-password="shuffler">
+    <div class="doc-header">
+        <div class="doc-header-icon"></div>
+        <div class="doc-header-title">Internal Communication</div>
+        <div class="doc-header-stamp">APRIL 2010</div>
+    </div>
+    <div class="doc-body-wrap">
+    <div class="doc-lock">
+        <div class="lock-label">Sender Authentication Required</div>
+        <div class="lock-row">
+            <input class="lock-input" type="password" placeholder="_ _ _ _ _ _ _ _" maxlength="20">
+            <button class="lock-btn">Access</button>
+        </div>
+        <div class="lock-err">Access denied</div>
+    </div>
+    <div class="doc-body">FROM: Dr. Allen Shuffler
 TO:   Dr. Elias Kain
 DATE: April 12, 2010
 SUBJ: Urgent Matter
@@ -1014,6 +1078,7 @@ We need to consider halting the trials before this escalates further. The ethica
 Meet me at the usual location tomorrow at 1900 hours. We can't discuss this over official channels.
 
 — Allen</div>
+                </div>
                 </div>
             </div>
 
@@ -1290,6 +1355,31 @@ Amdmzit xwab-qvkqlmvb kwuucvqkcéa lwkcumvb lmkqaqwva bw lmuwtqap amtmkbml abzck
                 setTimeout(() => document.body.style.filter = '', 80);
             }
         }, 4000);
+                // Document password locks
+        document.querySelectorAll('.doc-block').forEach(block => {
+            const password = block.getAttribute('data-password');
+            if (!password) return;
+            const lock = block.querySelector('.doc-lock');
+            const input = lock.querySelector('.lock-input');
+            const btn = lock.querySelector('.lock-btn');
+            const err = lock.querySelector('.lock-err');
+
+            function attempt() {
+                if (input.value === password) {
+                    lock.classList.add('unlocked');
+                } else {
+                    err.classList.add('show');
+                    lock.classList.add('shaking');
+                    input.value = '';
+                    setTimeout(() => {
+                        lock.classList.remove('shaking');
+                        err.classList.remove('show');
+                    }, 1000);
+                }
+            }
+            btn.addEventListener('click', attempt);
+            input.addEventListener('keypress', e => { if (e.key === 'Enter') attempt(); });
+        });
     </script>
 </body>
 </html>
