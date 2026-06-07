@@ -11,7 +11,7 @@
   <p style="margin-top: 16px;"><strong style="color: #7df9ff; font-size: 16px;">🔻 [PUZZLE ACCESS] — ENTER THE FRACTURE</strong></p>
   <p style="background: #0b0b0f80; padding: 12px 16px; border-left: 3px solid #7df9ff; border-radius: 12px;">
     <a href="https://rojz23.github.io/SecondLives.html" style="color: #7df9ff; text-decoration: none; font-weight: bold;">➤ Second Lives Corp website</a><br>
-    <a href="https://rojz23.github.io/BreachUnit.html" style="color: #ff9999; text-decoration: none; font-weight: bold; margin-top: 8px; display: inline-block;">➤ Breach Unit — unauthorized</a>
+    <a href="https://rojz23.github.io/BreachUnit.html" style="color: #ff9999; text-decoration: none; font-weight: bold; margin-top: 8px; display: inline-block;">➤ Breach Unit </a>
   </p>
 
   <p style="margin-top: 24px;"><strong style="color: #ffcc66; font-size: 16px;">📁 [CREW FILE] </strong></p>
