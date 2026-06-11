@@ -9,9 +9,9 @@
 
   <div style="padding: 22px 28px; border-bottom: 1px solid #2e2e3a;">
     <div style="font-size: 10px; letter-spacing: 3px; color: #666; text-transform: uppercase; margin-bottom: 16px;">Puzzle Access — Enter the Fracture</div>
-    <a href="https://rojz23.github.io/SecondLives.html" style="display:flex; align-items:center; gap:12px; padding:13px 18px; background:#252533; border-radius:10px; border:1px solid #2e2e3a; text-decoration:none; margin-bottom:10px;">
+    <a href="https://www.instagram.com/thebreachunit/" style="display:flex; align-items:center; gap:12px; padding:13px 18px; background:#252533; border-radius:10px; border:1px solid #2e2e3a; text-decoration:none; margin-bottom:10px;">
       <span style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0;"></span>
-      <span style="font-size:14px;font-weight:600;color:#dde;">Second Lives Corp website</span>
+      <span style="font-size:14px;font-weight:600;color:#dde;">TailHead: Start here</span>
       <span style="margin-left:auto;color:#555;">↗</span>
     </a>
     <a href="https://rojz23.github.io/login.html" style="display:flex; align-items:center; gap:12px; padding:13px 18px; background:#252533; border-radius:10px; border:1px solid #2e2e3a; text-decoration:none;">
