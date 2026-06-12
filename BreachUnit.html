@@ -820,6 +820,10 @@
             transition: opacity 0.35s;
         }
         .doc-lock.unlocked { opacity: 0; pointer-events: none; }
+        .doc-lock:not(.unlocked) ~ .doc-body {
+            visibility: hidden;
+            user-select: none;
+        }
 
         .lock-label {
             font-size: 0.62rem; letter-spacing: 3px;
