@@ -1643,12 +1643,20 @@
             'Research Specimens': 'Parasites_Dossier.pdf'
         };
 
+        const imgThumbnails = {
+            'Research Specimens': 'PDF.png'
+        };
+
         d.imgs.forEach(([title, desc]) => {
             const pdfPath = imgPdfLinks[title];
+            const thumb = imgThumbnails[title];
             const clickHandler = pdfPath ? `onclick="window.open('${pdfPath}', '_blank')" style="cursor:pointer;"` : '';
+            const thumbnailContent = thumb
+                ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`
+                : `<i class="fas fa-image"></i>`;
             imageArchives.innerHTML += `
                 <div class="archive-item" ${clickHandler}>
-                    <div class="archive-thumbnail img-thumb"><i class="fas fa-image"></i></div>
+                    <div class="archive-thumbnail img-thumb">${thumbnailContent}</div>
                     <div class="archive-info"><h3>${title}</h3><p>${desc}</p></div>
                 </div>`;
         });
