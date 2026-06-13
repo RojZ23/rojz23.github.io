@@ -1595,8 +1595,10 @@ Lqabzqjcbqwv jmgwvl icbpwzqhml xmzawvvmt qa xzwpqjqbml.
             link.addEventListener('click', e => {
                 e.preventDefault();
                 const id = link.getAttribute('data-file');
+                const target = document.getElementById(id + '-content');
+                const isOpen = target.style.display === 'block';
                 document.querySelectorAll('.file-content').forEach(c => c.style.display = 'none');
-                document.getElementById(id + '-content').style.display = 'block';
+                if (!isOpen) target.style.display = 'block';
             });
         });
 
