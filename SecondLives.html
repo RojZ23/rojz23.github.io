@@ -1639,9 +1639,15 @@
         };
 
         const d = content[level];
+        const imgPdfLinks = {
+            'Research Specimens': 'your-file.pdf'
+        };
+
         d.imgs.forEach(([title, desc]) => {
+            const pdfPath = imgPdfLinks[title];
+            const clickHandler = pdfPath ? `onclick="window.open('${pdfPath}', '_blank')" style="cursor:pointer;"` : '';
             imageArchives.innerHTML += `
-                <div class="archive-item">
+                <div class="archive-item" ${clickHandler}>
                     <div class="archive-thumbnail img-thumb"><i class="fas fa-image"></i></div>
                     <div class="archive-info"><h3>${title}</h3><p>${desc}</p></div>
                 </div>`;
