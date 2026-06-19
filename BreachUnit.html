@@ -1497,12 +1497,13 @@ Lqabzqjcbqwv jmgwvl icbpwzqhml xmzawvvmt qa xzwpqjqbml.
         </div>
     </div>
 
-    <!-- Image Modal -->
+    <!-- Image / Video Modal -->
     <div class="image-modal" id="image-modal">
         <button class="image-modal-close" id="image-modal-close">✕</button>
-        <img class="image-modal-content" id="image-modal-img" src="" alt="">
+        <img class="image-modal-content" id="image-modal-img" src="" alt="" style="display:none;">
+        <video class="image-modal-content" id="image-modal-video" controls style="display:none;"></video>
     </div>
-
+    
     <!-- Audio elements -->
     <audio id="audio0" src="Kira_AudioLog1.mp3" preload="auto"></audio>
     <audio id="audio1" src="Kira_AudioLog2.mp3" preload="auto"></audio>
@@ -1615,20 +1616,44 @@ Lqabzqjcbqwv jmgwvl icbpwzqhml xmzawvvmt qa xzwpqjqbml.
             });
         });
 
+        const videoEl = document.getElementById('image-modal-video');
+
         document.querySelectorAll('.secret-button').forEach(btn => {
             btn.addEventListener('click', e => {
                 e.stopPropagation();
-                imgEl.src = 'images/' + btn.getAttribute('data-image');
+                const file = btn.getAttribute('data-image');
+                const isVideo = /\.(mp4|mov|webm|ogv?)$/i.test(file);
+
+                if (isVideo) {
+                    imgEl.style.display = 'none';
+                    imgEl.src = '';
+                    videoEl.style.display = 'block';
+                    videoEl.src = 'images/' + file;
+                    videoEl.play().catch(() => {});
+                } else {
+                    videoEl.pause();
+                    videoEl.removeAttribute('src');
+                    videoEl.load();
+                    videoEl.style.display = 'none';
+                    imgEl.style.display = 'block';
+                    imgEl.src = 'images/' + file;
+                }
+
                 imgModal.classList.add('active');
                 highlights.forEach(h => h.classList.remove('active'));
             });
         });
 
-        document.getElementById('image-modal-close').addEventListener('click', () => imgModal.classList.remove('active'));
-        imgModal.addEventListener('click', e => { if (e.target === imgModal) imgModal.classList.remove('active'); });
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.secret-highlight')) highlights.forEach(h => h.classList.remove('active'));
-        });
+        function closeImageModal() {
+            imgModal.classList.remove('active');
+            videoEl.pause();
+            videoEl.removeAttribute('src');
+            videoEl.load();
+            imgEl.src = '';
+        }
+
+        document.getElementById('image-modal-close').addEventListener('click', closeImageModal);
+        imgModal.addEventListener('click', e => { if (e.target === imgModal) closeImageModal(); });
 
         // Shake keyframe
         const s = document.createElement('style');
