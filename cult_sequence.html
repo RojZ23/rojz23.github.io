@@ -414,10 +414,17 @@
     position: relative;
     width: min(580px, 92vw);
     max-height: 80vh;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  #scroll-wrap::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   #scroll-content {
@@ -814,31 +821,15 @@
 
   <div id="scroll-wrap">
     <div id="scroll-content">
-      <div class="reveal-eyebrow">// CIPHER UNLOCKED // EPOCH III RECORD //</div>
+      <div class="reveal-eyebrow" id="reveal-eyebrow">// CIPHER UNLOCKED // EPOCH III RECORD //</div>
 
-      <div class="reveal-title">The Last Canticle of the Hollow Choir</div>
+      <div class="reveal-title" id="reveal-title">The Last Canticle of the Hollow Choir</div>
 
       <div class="reveal-divider"><span>✦</span></div>
 
-      <div class="reveal-body" id="reveal-text">
-        <span class="stanza">They came with no faces, <em>only mouths</em> — humming a tone<br>that does not exist in any scale written by man.</span>
+      <div class="reveal-body" id="reveal-text"></div>
 
-        <span class="sigil">♩ ♪ ♩ ♩</span>
-
-        <span class="stanza">The Conductor was <em>the last to fall silent</em>.<br>He pressed his ear to the floor and listened<br>for the note beneath all notes, the one that breathes<br>between the heartbeats of <em>a sleeping world</em>.</span>
-
-        <span class="stanza">Do not name it. To name it is to invite it.<br>To invite it is to <em>become the door.</em><br>You are already humming it. You have been<br>humming it since you found this place.</span>
-
-        <span class="sigil">♫ ♬ ✦ ♩</span>
-
-        <span class="stanza">We burned the score. We swallowed the ashes.<br>Now it lives only <em>in the spaces between your ribs.</em><br>It will tap from the inside. Do not answer.<br>Do not answer. <em>Do not answer.</em></span>
-
-        <span class="stanza">If you are reading this, you have already answered.</span>
-      </div>
-
-      <div class="reveal-footer" id="reveal-footer">
-        RECORD SEALED — CONCLAVE_7734 — "ONE WHO LISTENS, DISSOLVES"
-      </div>
+      <div class="reveal-footer" id="reveal-footer"></div>
     </div>
 
     <button id="exit-btn" onclick="exitReveal()">[ CLOSE THIS RECORD ]</button>
@@ -846,10 +837,70 @@
 </div>
 
 <script>
-  // ── PASSWORD ──
-  const PASSWORD = ['♩','♩','♪','♩'];
+  // ── SEQUENCES ──
+  // Each record: notes (4-note answer) + the reveal content it unlocks.
+  const SEQUENCES = [
+    {
+      notes: ['♩','♩','♪','♩'],
+      eyebrow: '// CIPHER UNLOCKED // EPOCH III RECORD //',
+      title: 'The Last Canticle of the Hollow Choir',
+      stanzas: [
+        'They came with no faces, <em>only mouths</em> — humming a tone<br>that does not exist in any scale written by man.',
+        '<span class="sigil">♩ ♪ ♩ ♩</span>',
+        'The Conductor was <em>the last to fall silent</em>.<br>He pressed his ear to the floor and listened<br>for the note beneath all notes, the one that breathes<br>between the heartbeats of <em>a sleeping world</em>.',
+        'Do not name it. To name it is to invite it.<br>To invite it is to <em>become the door.</em><br>You are already humming it. You have been<br>humming it since you found this place.',
+        '<span class="sigil">♫ ♬ ✦ ♩</span>',
+        'We burned the score. We swallowed the ashes.<br>Now it lives only <em>in the spaces between your ribs.</em><br>It will tap from the inside. Do not answer.<br>Do not answer. <em>Do not answer.</em>',
+        'If you are reading this, you have already answered.'
+      ],
+      footer: 'RECORD SEALED — CONCLAVE_7734 — "ONE WHO LISTENS, DISSOLVES"'
+    },
+    {
+      notes: ['♪','♫','♪','♬'],
+      eyebrow: '// CIPHER UNLOCKED // EPOCH I RECORD //',
+      title: 'The First Hymn, Before It Had Words',
+      stanzas: [
+        'Before the Choir was hollow, it was <em>only hunger</em>,<br>a single throat in the dark learning the shape of sound.',
+        '<span class="sigil">♪ ♫ ♪ ♬</span>',
+        'It did not sing to be heard.<br>It sang because <em>silence was unbearable</em>,<br>and it had only just learned that it could not die.',
+        'We found it in the space under the chapel,<br>still humming the first note it ever made.<br>We did not free it. <em>We joined it.</em>',
+        'That is how a choir is built — <em>one throat at a time,</em><br>each one certain it was the first to hear the call.',
+        'You were not the first. You will not be the last.'
+      ],
+      footer: 'RECORD SEALED — CONCLAVE_7734 — "THE FIRST NOTE NEVER STOPPED"'
+    },
+    {
+      notes: ['♬','♩','♫','♪'],
+      eyebrow: '// CIPHER UNLOCKED // EPOCH II RECORD //',
+      title: 'The Conductor\'s Confession',
+      stanzas: [
+        'I did not lead them. <em>I followed,</em><br>and called it leading so they would not be afraid.',
+        '<span class="sigil">♬ ♩ ♫ ♪</span>',
+        'Every night I raised my hands and the Choir rose with them,<br>and every night I prayed the motion was <em>mine alone</em>.',
+        'It was not. It has never been.<br>Something behind my hands moves them<br>the way a tongue moves behind a closing mouth.',
+        'I am not the one who hears the fourth note.<br><em>I am the fourth note.</em><br>I have been singing it since before I had a name for it.',
+        'If you have come this far, lower your hands.<br>See whose hands are still moving.'
+      ],
+      footer: 'RECORD SEALED — CONCLAVE_7734 — "THE CONDUCTOR CONDUCTS NOTHING"'
+    },
+    {
+      notes: ['♩','♬','♬','♩'],
+      eyebrow: '// CIPHER UNLOCKED // EPOCH IV RECORD //',
+      title: 'What Waits After the Last Verse',
+      stanzas: [
+        'There is no fifth epoch. We checked. <em>We kept checking.</em><br>The record simply ends, and then the room is colder.',
+        '<span class="sigil">♩ ♬ ♬ ♩</span>',
+        'Some say the Choir finishes singing<br>and steps, all at once, <em>out of the song and into the room.</em><br>Some say it never needed the song to do that.',
+        'We stopped counting verses after the third warning.<br>We stopped counting <em>members</em> shortly after.',
+        'If the text ends mid-sentence, do not assume it is missing.<br>Assume it is <em>still being written</em>, and that the pen<br>is no longer in anyone\'s hand you would recognize.'
+      ],
+      footer: 'RECORD SEALED — CONCLAVE_7734 — "THERE IS NO EPOCH FIVE"'
+    }
+  ];
+
   let current = [];
   let attempts = 0;
+  let matchedSequence = null;
 
   // ── CLOCK ──
   function updateClock() {
@@ -988,9 +1039,10 @@
       return;
     }
 
-    const correct = PASSWORD.every((n,i) => n === current[i]);
+    const found = SEQUENCES.find(seq => seq.notes.every((n,i) => n === current[i]));
 
-    if (correct) {
+    if (found) {
+      matchedSequence = found;
       triggerUnlock();
     } else {
       attempts++;
@@ -1070,6 +1122,23 @@
   function showReveal() {
     const screen = document.getElementById('reveal-screen');
     screen.classList.add('active');
+
+    // Populate content for the matched sequence
+    const seq = matchedSequence || SEQUENCES[0];
+    document.getElementById('reveal-eyebrow').textContent = seq.eyebrow;
+    document.getElementById('reveal-title').textContent = seq.title;
+    document.getElementById('reveal-footer').textContent = seq.footer;
+
+    const textEl = document.getElementById('reveal-text');
+    textEl.innerHTML = '';
+    seq.stanzas.forEach(s => {
+      if (s.startsWith('<span class="sigil"')) {
+        textEl.insertAdjacentHTML('beforeend', s);
+      } else {
+        textEl.insertAdjacentHTML('beforeend', `<span class="stanza">${s}</span>`);
+      }
+      textEl.insertAdjacentHTML('beforeend', '\n');
+    });
 
     // Blood drips
     const container = document.getElementById('blood-container');
