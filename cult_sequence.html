@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYSTEM::LOCKED — NODE_7734</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=UnifrakturMaguntia&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --void: #070008;
+    --deep: #0f0012;
+    --blood: #6b0000;
+    --ritual: #a80000;
+    --ember: #cc2200;
+    --parchment: #d4c5a0;
+    --dim: #5a3a3a;
+    --ghost: #2a1a2a;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--void);
+    color: var(--parchment);
+    font-family: 'VT323', monospace;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  /* SCANLINES */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.18) 2px,
+      rgba(0,0,0,0.18) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* VIGNETTE */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9998;
+    background: radial-gradient(ellipse at center,
+      transparent 40%,
+      rgba(0,0,0,0.7) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* NOISE OVERLAY */
+  #noise {
+    position: fixed; inset: 0; z-index: 9997;
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px;
+  }
+
+  /* MAIN WRAPPER */
+  #terminal {
+    position: relative;
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0;
+    transition: filter 0.1s;
+  }
+
+  /* TOP STATUS BAR */
+  #statusbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 6px 18px;
+    font-size: 13px;
+    color: var(--dim);
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid rgba(100,0,0,0.2);
+    background: rgba(7,0,8,0.9);
+    letter-spacing: 0.05em;
+    z-index: 100;
+  }
+
+  #statusbar .blink {
+    animation: blink 1.4s step-end infinite;
+    color: var(--blood);
+  }
+
+  /* HEADER */
+  #header {
+    text-align: center;
+    margin-bottom: 28px;
+    user-select: none;
+  }
+
+  #header .sys-label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--dim);
+    margin-bottom: 4px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  #header h1 {
+    font-family: 'VT323', monospace;
+    font-size: clamp(28px, 5vw, 48px);
+    color: var(--blood);
+    letter-spacing: 0.15em;
+    text-shadow:
+      0 0 8px rgba(168,0,0,0.8),
+      0 0 30px rgba(100,0,0,0.4);
+    animation: flicker 6s infinite;
+  }
+
+  #header .subtitle {
+    font-size: 13px;
+    color: var(--dim);
+    letter-spacing: 0.25em;
+    margin-top: 6px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* CORRUPTED TEXT STREAM */
+  #corrupt-stream {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: rgba(100,0,0,0.35);
+    text-align: center;
+    width: min(600px, 92vw);
+    height: 36px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  /* PANEL */
+  #panel {
+    border: 1px solid rgba(110,0,0,0.4);
+    background: rgba(10,0,8,0.85);
+    padding: 30px 36px 28px;
+    width: min(520px, 94vw);
+    position: relative;
+    box-shadow:
+      0 0 0 1px rgba(80,0,0,0.15),
+      0 0 40px rgba(100,0,0,0.08),
+      inset 0 0 60px rgba(0,0,0,0.5);
+  }
+
+  #panel::before {
+    content: 'AUTHENTICATION_PROTOCOL::ACTIVE';
+    position: absolute; top: -11px; left: 18px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    background: var(--void);
+    padding: 0 8px;
+    color: var(--blood);
+    letter-spacing: 0.2em;
+  }
+
+  /* PANEL CORNER ORNAMENTS */
+  #panel::after {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    border: 1px solid rgba(80,0,0,0.12);
+    pointer-events: none;
+  }
+
+  .corner {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-color: var(--blood);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .corner-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
+  .corner-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
+  .corner-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+  .corner-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+
+  /* PROMPT LINE */
+  .prompt-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 22px;
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+
+  .prompt-line span { color: var(--ritual); }
+
+  /* INSTRUCTION */
+  .instruction {
+    font-size: 15px;
+    color: rgba(200,170,150,0.5);
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+  }
+
+  /* NOTE BUTTONS */
+  #note-pad {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .note-btn {
+    width: 64px; height: 64px;
+    border: 1px solid rgba(140,0,0,0.5);
+    background: rgba(30,0,15,0.8);
+    color: var(--parchment);
+    font-size: 32px;
+    cursor: pointer;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    user-select: none;
+    -webkit-user-select: none;
+    outline: none;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .note-btn:hover {
+    border-color: var(--ritual);
+    background: rgba(80,0,30,0.8);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255,100,50,0.9);
+    box-shadow: 0 0 16px rgba(168,0,0,0.4);
+    transform: scale(1.06);
+  }
+
+  .note-btn:active, .note-btn.pressed {
+    transform: scale(0.94);
+    background: rgba(130,0,40,0.9);
+    box-shadow: 0 0 28px rgba(200,30,0,0.6);
+  }
+
+  .note-btn .note-label {
+    position: absolute;
+    bottom: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* SEQUENCE DISPLAY */
+  #sequence-display {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    height: 38px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .seq-slot {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(80,0,0,0.4);
+    background: rgba(10,0,5,0.9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    color: var(--blood);
+    clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+    transition: all 0.15s;
+  }
+
+  .seq-slot.filled {
+    border-color: var(--ritual);
+    color: var(--parchment);
+    text-shadow: 0 0 8px rgba(200,100,50,0.7);
+    background: rgba(60,0,20,0.8);
+    box-shadow: inset 0 0 10px rgba(100,0,0,0.3);
+  }
+
+  /* ERROR/FEEDBACK */
+  #feedback {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    text-align: center;
+    height: 18px;
+    letter-spacing: 0.15em;
+    color: var(--ember);
+    transition: opacity 0.3s;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(100,0,0,0.4), transparent);
+    margin: 18px 0;
+  }
+
+  /* SUBMIT */
+  #submit-btn {
+    width: 100%;
+    padding: 11px;
+    background: rgba(60,0,20,0.6);
+    border: 1px solid rgba(140,0,0,0.5);
+    color: var(--parchment);
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    outline: none;
+  }
+
+  #submit-btn:hover {
+    background: rgba(100,0,30,0.8);
+    border-color: var(--ritual);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(150,0,0,0.4);
+    text-shadow: 0 0 10px rgba(255,80,50,0.7);
+  }
+
+  #submit-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* CLEAR BTN */
+  #clear-btn {
+    background: none;
+    border: none;
+    color: var(--dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    letter-spacing: 0.2em;
+    display: block;
+    margin: 10px auto 0;
+    transition: color 0.2s;
+    outline: none;
+  }
+  #clear-btn:hover { color: var(--ember); }
+
+  /* BOTTOM METADATA */
+  #meta {
+    margin-top: 22px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: rgba(80,30,30,0.5);
+    text-align: center;
+    letter-spacing: 0.1em;
+    line-height: 1.9;
+    user-select: none;
+  }
+
+  /* ===================== GLITCH OVERLAY ===================== */
+  #glitch-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: var(--void);
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  #glitch-overlay.active { display: flex; }
+
+  .glitch-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 4px;
+    background: var(--ember);
+    opacity: 0;
+    animation: none;
+  }
+
+  /* ===================== REVEAL SCREEN ===================== */
+  #reveal-screen {
+    position: fixed; inset: 0; z-index: 600;
+    background: #020004;
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  #reveal-screen.active { display: flex; }
+
+  /* BLOOD DRIPS */
+  #blood-container {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 120px;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .drip {
+    position: absolute;
+    top: 0;
+    width: 6px;
+    background: linear-gradient(180deg, var(--blood) 0%, var(--ritual) 60%, transparent 100%);
+    border-radius: 0 0 50% 50%;
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  /* SCROLL CONTAINER */
+  #scroll-wrap {
+    position: relative;
+    width: min(580px, 92vw);
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #scroll-content {
+    background: linear-gradient(180deg, #1a0a00 0%, #0e0600 50%, #1a0a00 100%);
+    border: 1px solid rgba(120,50,0,0.4);
+    padding: 40px 44px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    box-shadow:
+      0 0 0 1px rgba(80,30,0,0.2),
+      0 0 60px rgba(80,0,0,0.3),
+      inset 0 0 40px rgba(0,0,0,0.6);
+  }
+
+  #scroll-content.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #scroll-content::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(100,40,0,0.2);
+    pointer-events: none;
+  }
+
+  /* RUNE BORDER */
+  #scroll-content::after {
+    content: '𐰀 ✦ 𐰂 ✦ 𐰄 ✦ 𐰆 ✦ 𐰈 ✦ 𐰊 ✦ 𐰀';
+    position: absolute; top: 14px; left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(120,60,0,0.4);
+    letter-spacing: 0.3em;
+    pointer-events: none;
+  }
+
+  .reveal-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: rgba(150,60,0,0.6);
+    text-align: center;
+    margin-bottom: 18px;
+    margin-top: 10px;
+  }
+
+  .reveal-title {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: clamp(22px, 4vw, 34px);
+    color: var(--ember);
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 22px;
+    text-shadow:
+      0 0 20px rgba(200,50,0,0.6),
+      0 0 50px rgba(100,0,0,0.3);
+    animation: flicker 8s infinite;
+  }
+
+  .reveal-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 22px;
+  }
+  .reveal-divider::before,
+  .reveal-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(140,50,0,0.5), transparent);
+  }
+  .reveal-divider span {
+    color: rgba(140,60,0,0.6);
+    font-size: 14px;
+  }
+
+  .reveal-body {
+    font-family: 'VT323', monospace;
+    font-size: clamp(16px, 2.8vw, 21px);
+    color: var(--parchment);
+    line-height: 1.85;
+    letter-spacing: 0.05em;
+    text-align: left;
+  }
+
+  .reveal-body em {
+    font-style: normal;
+    color: var(--ember);
+    text-shadow: 0 0 8px rgba(200,50,0,0.4);
+  }
+
+  .reveal-body .stanza {
+    display: block;
+    margin-bottom: 14px;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal-body .stanza.shown {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* SIGIL */
+  .sigil {
+    display: block;
+    text-align: center;
+    font-size: 28px;
+    color: rgba(160,50,0,0.5);
+    margin: 16px 0;
+    letter-spacing: 0.5em;
+  }
+
+  /* FOOTER NOTE */
+  .reveal-footer {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: rgba(100,40,0,0.5);
+    text-align: center;
+    margin-top: 20px;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .reveal-footer.shown { opacity: 1; }
+
+  /* EXIT BUTTON */
+  #exit-btn {
+    margin-top: 24px;
+    background: none;
+    border: 1px solid rgba(100,0,0,0.4);
+    color: rgba(120,60,60,0.6);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    padding: 8px 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+    opacity: 0;
+    transition: opacity 1s ease, color 0.2s, border-color 0.2s;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  }
+  #exit-btn.shown { opacity: 1; }
+  #exit-btn:hover { color: var(--ember); border-color: var(--blood); }
+
+  /* ===================== ANIMATIONS ===================== */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes flicker {
+    0%, 92%, 94%, 96%, 100% { opacity: 1; }
+    93% { opacity: 0.6; }
+    95% { opacity: 0.85; }
+  }
+
+  @keyframes scanline-move {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(150,0,0,0.3); }
+    50% { box-shadow: 0 0 20px rgba(200,0,0,0.5); }
+  }
+
+  @keyframes drip-fall {
+    0% { transform: scaleY(0); opacity: 0.9; }
+    60% { transform: scaleY(1); opacity: 0.9; }
+    100% { transform: scaleY(1); opacity: 0; }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0,0) rotate(0); }
+    10% { transform: translate(-4px, 2px) rotate(-0.5deg); }
+    20% { transform: translate(5px, -3px) rotate(0.5deg); }
+    30% { transform: translate(-3px, -4px) rotate(-0.3deg); }
+    40% { transform: translate(4px, 3px) rotate(0.4deg); }
+    50% { transform: translate(-5px, 1px) rotate(-0.6deg); }
+    60% { transform: translate(3px, -2px) rotate(0.3deg); }
+    70% { transform: translate(-2px, 4px) rotate(-0.4deg); }
+    80% { transform: translate(4px, -1px) rotate(0.5deg); }
+    90% { transform: translate(-3px, 2px) rotate(-0.3deg); }
+  }
+
+  @keyframes glitch-slide {
+    0% { top: -20%; opacity: 0; }
+    10% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { top: 120%; opacity: 0; }
+  }
+
+  /* ===================== SHUTDOWN SCREEN ===================== */
+  #shutdown-screen {
+    position: fixed; inset: 0; z-index: 700;
+    background: #000;
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  #shutdown-screen.active { display: flex; }
+
+  #shutdown-terminal {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: #cc0000;
+    width: min(640px, 92vw);
+    line-height: 2;
+    letter-spacing: 0.07em;
+  }
+
+  .sd-line {
+    display: block;
+    opacity: 0;
+    transform: translateX(-6px);
+    white-space: pre;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .sd-line.show { opacity: 1; transform: translateX(0); }
+  .sd-line.white { color: #aaa; }
+  .sd-line.dim-red { color: #550000; }
+  .sd-line.bright { color: #ff2200; text-shadow: 0 0 10px rgba(255,30,0,0.7); }
+  .sd-line.warn { color: #ff6600; }
+
+  #sd-progress-wrap {
+    margin-top: 18px;
+    width: min(640px, 92vw);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  #sd-progress-wrap.show { opacity: 1; }
+
+  #sd-progress-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #550000;
+    letter-spacing: 0.2em;
+    margin-bottom: 6px;
+  }
+
+  #sd-progress-bar {
+    height: 6px;
+    background: rgba(100,0,0,0.3);
+    border: 1px solid rgba(150,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #sd-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3a0000, #cc0000);
+    box-shadow: 0 0 8px rgba(200,0,0,0.6);
+    transition: width 3s linear;
+  }
+
+  #sd-final {
+    margin-top: 32px;
+    width: min(640px, 92vw);
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: clamp(24px, 4vw, 40px);
+    color: #cc0000;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    text-shadow: 0 0 20px rgba(200,0,0,0.5);
+    transition: opacity 1s ease;
+  }
+  #sd-final.show { opacity: 1; }
+
+  #sd-static {
+    position: absolute; inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+    mix-blend-mode: screen;
+    transition: opacity 0.5s;
+  }
+  #sd-static.show { opacity: 0.06; }
+
+  /* WARNING PULSE on panel */
+  @keyframes warning-pulse {
+    0%, 100% { border-color: rgba(110,0,0,0.4); box-shadow: 0 0 0 1px rgba(80,0,0,0.15), 0 0 40px rgba(100,0,0,0.08), inset 0 0 60px rgba(0,0,0,0.5); }
+    50% { border-color: rgba(220,30,0,0.9); box-shadow: 0 0 0 2px rgba(180,0,0,0.5), 0 0 50px rgba(200,0,0,0.3), inset 0 0 60px rgba(80,0,0,0.2); }
+  }
+
+  @keyframes redden {
+    0% { filter: none; }
+    50% { filter: brightness(0.6) sepia(1) saturate(4) hue-rotate(-10deg); }
+    100% { filter: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="noise"></div>
+
+<!-- STATUS BAR -->
+<div id="statusbar">
+  <span>NODE_7734 // LOCKED</span>
+  <span id="clock-display">--:--:--</span>
+  <span><span class="blink">▮</span> AWAITING_INPUT</span>
+</div>
+
+<!-- MAIN TERMINAL -->
+<div id="terminal">
+
+  <div id="header">
+    <div class="sys-label">ECCLESIASTICAL_OS // v0.6.6.6</div>
+    <h1>T H E &nbsp; S E Q U E N C E</h1>
+    <div class="subtitle">[ ACCESS RESTRICTED // INITIATES ONLY ]</div>
+  </div>
+
+  <div id="corrupt-stream"></div>
+
+  <div id="panel">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="prompt-line">
+      <span>SYS</span> > Ritual lock engaged on 4-note cipher<br>
+      <span>SYS</span> > Enter the sequence to proceed<br>
+      <span>SYS</span> > <span class="blink">_</span>
+    </div>
+
+    <div class="instruction">— COMPOSE THE OFFERING IN THE CORRECT ORDER —</div>
+
+    <div id="note-pad">
+      <button class="note-btn" data-note="♩" onclick="pressNote(this)" aria-label="Quarter note">
+        ♩<span class="note-label">♩</span>
+      </button>
+      <button class="note-btn" data-note="♪" onclick="pressNote(this)" aria-label="Eighth note">
+        ♪<span class="note-label">♪</span>
+      </button>
+      <button class="note-btn" data-note="♫" onclick="pressNote(this)" aria-label="Beamed notes">
+        ♫<span class="note-label">♫</span>
+      </button>
+      <button class="note-btn" data-note="♬" onclick="pressNote(this)" aria-label="Double beamed">
+        ♬<span class="note-label">♬</span>
+      </button>
+    </div>
+
+    <div id="sequence-display">
+      <div class="seq-slot" id="s0"></div>
+      <div class="seq-slot" id="s1"></div>
+      <div class="seq-slot" id="s2"></div>
+      <div class="seq-slot" id="s3"></div>
+    </div>
+
+    <div id="feedback">&nbsp;</div>
+
+    <div class="divider"></div>
+
+    <button id="submit-btn" onclick="submitSequence()">INVOKE</button>
+    <button id="clear-btn" onclick="clearSequence()">[ CLEAR ]</button>
+  </div>
+
+  <div id="meta">
+    RITUAL_PROTOCOL::7734 &nbsp;|&nbsp; EPOCH::III &nbsp;|&nbsp; CONCLAVE::REDACTED<br>
+    "He who hears the fourth note shall not return unchanged."
+  </div>
+
+</div>
+
+<!-- SHUTDOWN SCREEN -->
+<div id="shutdown-screen">
+  <div id="sd-static"></div>
+  <div id="shutdown-terminal"></div>
+  <div id="sd-progress-wrap">
+    <div id="sd-progress-label">PURGING SESSION DATA...</div>
+    <div id="sd-progress-bar"><div id="sd-progress-fill"></div></div>
+  </div>
+  <div id="sd-final">ACCESS PERMANENTLY REVOKED</div>
+</div>
+
+<!-- GLITCH OVERLAY -->
+<div id="glitch-overlay"></div>
+
+<!-- REVEAL SCREEN -->
+<div id="reveal-screen">
+  <div id="blood-container"></div>
+
+  <div id="scroll-wrap">
+    <div id="scroll-content">
+      <div class="reveal-eyebrow">// CIPHER UNLOCKED // EPOCH III RECORD //</div>
+
+      <div class="reveal-title">The Last Canticle of the Hollow Choir</div>
+
+      <div class="reveal-divider"><span>✦</span></div>
+
+      <div class="reveal-body" id="reveal-text">
+        <span class="stanza">They came with no faces, <em>only mouths</em> — humming a tone<br>that does not exist in any scale written by man.</span>
+
+        <span class="sigil">♩ ♪ ♩ ♩</span>
+
+        <span class="stanza">The Conductor was <em>the last to fall silent</em>.<br>He pressed his ear to the floor and listened<br>for the note beneath all notes, the one that breathes<br>between the heartbeats of <em>a sleeping world</em>.</span>
+
+        <span class="stanza">Do not name it. To name it is to invite it.<br>To invite it is to <em>become the door.</em><br>You are already humming it. You have been<br>humming it since you found this place.</span>
+
+        <span class="sigil">♫ ♬ ✦ ♩</span>
+
+        <span class="stanza">We burned the score. We swallowed the ashes.<br>Now it lives only <em>in the spaces between your ribs.</em><br>It will tap from the inside. Do not answer.<br>Do not answer. <em>Do not answer.</em></span>
+
+        <span class="stanza">If you are reading this, you have already answered.</span>
+      </div>
+
+      <div class="reveal-footer" id="reveal-footer">
+        RECORD SEALED — CONCLAVE_7734 — "ONE WHO LISTENS, DISSOLVES"
+      </div>
+    </div>
+
+    <button id="exit-btn" onclick="exitReveal()">[ CLOSE THIS RECORD ]</button>
+  </div>
+</div>
+
+<script>
+  // ── PASSWORD ──
+  const PASSWORD = ['♩','♩','♪','♩'];
+  let current = [];
+  let attempts = 0;
+
+  // ── CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock-display').textContent = h + ':' + m + ':' + s;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ── CORRUPT STREAM ──
+  const corruptPool = [
+    'h3_1s_s1ng1ng_aga1n____', '_do_not_turn_around_now_',
+    'the_fourth_note_opens___', '7734_7734_7734__________',
+    'th3_ch01r_r3m3mb3rs_y0u_', '____you_were_expected____',
+    'do_n0t_name_1t_________', '_harmonics_breach_lvl_09',
+    '4_notes_4_walls_4_seals_', '__the_conductor_waits___',
+    'signal_detected::origin?', 'node_compromised_proceed',
+  ];
+  let corruptIdx = 0;
+  function cycleCorrupt() {
+    const el = document.getElementById('corrupt-stream');
+    const line = corruptPool[corruptIdx % corruptPool.length];
+    el.style.opacity = 0;
+    setTimeout(() => {
+      el.textContent = '> ' + line.toUpperCase() + ' <';
+      el.style.transition = 'opacity 0.4s';
+      el.style.opacity = 1;
+    }, 200);
+    corruptIdx++;
+  }
+  setInterval(cycleCorrupt, 2200);
+  cycleCorrupt();
+
+  // ── NOTE PRESS ──
+  function pressNote(btn) {
+    if (current.length >= 4) return;
+    const note = btn.getAttribute('data-note');
+    current.push(note);
+
+    // Visual feedback
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 150);
+
+    // Update slots
+    updateSlots();
+
+    // Play tone
+    playTone(current.length);
+
+    // Clear feedback
+    document.getElementById('feedback').textContent = '';
+  }
+
+  function updateSlots() {
+    for (let i = 0; i < 4; i++) {
+      const slot = document.getElementById('s' + i);
+      if (current[i]) {
+        slot.textContent = current[i];
+        slot.classList.add('filled');
+      } else {
+        slot.textContent = '';
+        slot.classList.remove('filled');
+      }
+    }
+  }
+
+  function clearSequence() {
+    current = [];
+    updateSlots();
+    document.getElementById('feedback').textContent = '';
+  }
+
+  // ── TONE GEN ──
+  let audioCtx = null;
+  const noteFreqs = [220, 277, 246, 220]; // Am-ish descending
+  function playTone(idx) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      const freq = noteFreqs[(idx - 1) % noteFreqs.length];
+      osc.frequency.value = freq;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.7);
+    } catch(e) {}
+  }
+
+  function playChord(freqs, duration = 1.2) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      freqs.forEach((f, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = f;
+        osc.type = 'sawtooth';
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration + 0.1);
+      });
+    } catch(e) {}
+  }
+
+  function playWrongChord() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 90;
+      osc.type = 'square';
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.5);
+    } catch(e) {}
+  }
+
+  // ── SUBMIT ──
+  function submitSequence() {
+    if (current.length < 4) {
+      setFeedback('INSUFFICIENT_INPUT — ENTER 4 NOTES', 'dim');
+      return;
+    }
+
+    const correct = PASSWORD.every((n,i) => n === current[i]);
+
+    if (correct) {
+      triggerUnlock();
+    } else {
+      attempts++;
+      playWrongChord();
+      shakePanel();
+      current = [];
+
+      if (attempts === 1) {
+        setFeedback('SEQUENCE_DENIED // THE CHOIR DOES NOT RECOGNIZE YOU', 'red');
+        document.getElementById('panel').style.animation = 'warning-pulse 0.6s ease 3';
+        setTimeout(updateSlots, 800);
+
+      } else if (attempts === 2) {
+        setFeedback('\u26A0 FINAL WARNING \u2014 ONE MORE VIOLATION TRIGGERS TERMINATION \u26A0', 'red');
+        document.body.style.animation = 'redden 1s ease forwards';
+        setTimeout(() => { document.body.style.animation = ''; }, 1000);
+        const sb = document.getElementById('statusbar');
+        sb.style.borderBottomColor = 'rgba(200,0,0,0.8)';
+        sb.style.color = '#cc0000';
+        corruptPool.unshift('W4RN1NG::SYST3M_T3RM1N4T10N_1MM1N3NT');
+        corruptPool.unshift('TH3_CH01R_1S_4NGR7___Y0U_H4V3_0N3_CH4NC3');
+        setTimeout(updateSlots, 800);
+
+      } else {
+        setTimeout(updateSlots, 200);
+        setTimeout(() => triggerShutdown(), 600);
+      }
+    }
+  }
+
+  function setFeedback(msg, type) {
+    const el = document.getElementById('feedback');
+    el.style.color = type === 'red' ? 'var(--ember)' : 'var(--dim)';
+    el.textContent = msg;
+  }
+
+  function shakePanel() {
+    const panel = document.getElementById('panel');
+    panel.style.animation = 'shake 0.5s ease';
+    setTimeout(() => panel.style.animation = '', 520);
+  }
+
+  // ── GLITCH & UNLOCK ──
+  function triggerUnlock() {
+    playChord([110, 138, 165, 220], 2.5);
+
+    const overlay = document.getElementById('glitch-overlay');
+    overlay.classList.add('active');
+
+    // Create glitch bars
+    for (let i = 0; i < 12; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'glitch-bar';
+      bar.style.top = Math.random() * 100 + 'vh';
+      bar.style.height = (Math.random() * 8 + 2) + 'px';
+      bar.style.opacity = (Math.random() * 0.8 + 0.2);
+      bar.style.background = Math.random() > 0.5 ? 'var(--ember)' : 'var(--blood)';
+      bar.style.animation = `glitch-slide ${0.3 + Math.random() * 0.6}s linear ${Math.random() * 0.4}s`;
+      overlay.appendChild(bar);
+    }
+
+    // Flash the body
+    let flashes = 0;
+    const flashInterval = setInterval(() => {
+      document.body.style.filter = flashes % 2 === 0 ? 'brightness(2) hue-rotate(160deg)' : 'brightness(0.2)';
+      flashes++;
+      if (flashes > 6) {
+        clearInterval(flashInterval);
+        document.body.style.filter = '';
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
+        showReveal();
+      }
+    }, 120);
+  }
+
+  function showReveal() {
+    const screen = document.getElementById('reveal-screen');
+    screen.classList.add('active');
+
+    // Blood drips
+    const container = document.getElementById('blood-container');
+    for (let i = 0; i < 18; i++) {
+      const drip = document.createElement('div');
+      drip.className = 'drip';
+      drip.style.left = (Math.random() * 100) + '%';
+      const h = 40 + Math.random() * 80;
+      drip.style.height = h + 'px';
+      drip.style.width = (3 + Math.random() * 5) + 'px';
+      const delay = Math.random() * 1.5;
+      drip.style.animation = `drip-fall ${0.8 + Math.random()}s ease-in ${delay}s forwards`;
+      container.appendChild(drip);
+    }
+
+    // Reveal scroll
+    setTimeout(() => {
+      document.getElementById('scroll-content').classList.add('revealed');
+    }, 300);
+
+    // Stagger stanzas
+    const stanzas = document.querySelectorAll('.stanza');
+    stanzas.forEach((s, i) => {
+      setTimeout(() => s.classList.add('shown'), 900 + i * 700);
+    });
+
+    // Show footer & exit
+    setTimeout(() => {
+      document.getElementById('reveal-footer').classList.add('shown');
+      document.getElementById('exit-btn').classList.add('shown');
+    }, 900 + stanzas.length * 700 + 600);
+
+    // Play ambient drone
+    setTimeout(() => playChord([55, 82, 110, 138], 4.0), 600);
+  }
+
+  function exitReveal() {
+    const screen = document.getElementById('reveal-screen');
+    screen.style.opacity = 0;
+    screen.style.transition = 'opacity 1.2s';
+    setTimeout(() => {
+      screen.classList.remove('active');
+      screen.style.opacity = '';
+      screen.style.transition = '';
+      clearSequence();
+      document.getElementById('feedback').textContent = '';
+    }, 1200);
+  }
+
+  // ── SHUTDOWN SEQUENCE ──
+  function triggerShutdown() {
+    // Disable all inputs
+    document.querySelectorAll('.note-btn, #submit-btn, #clear-btn').forEach(b => {
+      b.disabled = true;
+      b.style.pointerEvents = 'none';
+      b.style.opacity = '0.3';
+    });
+
+    // Violent glitch first
+    const overlay = document.getElementById('glitch-overlay');
+    overlay.classList.add('active');
+    overlay.style.background = '#000';
+    for (let i = 0; i < 20; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'glitch-bar';
+      bar.style.top = Math.random() * 100 + 'vh';
+      bar.style.height = (Math.random() * 14 + 3) + 'px';
+      bar.style.opacity = '0.9';
+      bar.style.background = Math.random() > 0.3 ? '#cc0000' : '#fff';
+      bar.style.animation = `glitch-slide ${0.2 + Math.random() * 0.4}s linear ${Math.random() * 0.3}s`;
+      overlay.appendChild(bar);
+    }
+
+    // Flash red hard
+    let flashes = 0;
+    const flashInterval = setInterval(() => {
+      document.body.style.filter = flashes % 2 === 0
+        ? 'brightness(0.1) sepia(1) saturate(10) hue-rotate(-10deg)'
+        : 'brightness(2) sepia(1) saturate(8) hue-rotate(-5deg)';
+      flashes++;
+      if (flashes > 8) {
+        clearInterval(flashInterval);
+        document.body.style.filter = 'brightness(0)';
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
+        setTimeout(() => {
+          document.body.style.filter = '';
+          showShutdownTerminal();
+        }, 300);
+      }
+    }, 80);
+
+    // Screech sound
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      [80, 120, 200, 60].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sawtooth';
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime + i * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.12 + 0.4);
+        osc.start(audioCtx.currentTime + i * 0.12);
+        osc.stop(audioCtx.currentTime + i * 0.12 + 0.5);
+      });
+    } catch(e) {}
+  }
+
+  function showShutdownTerminal() {
+    const screen = document.getElementById('shutdown-screen');
+    screen.classList.add('active');
+    document.getElementById('sd-static').classList.add('show');
+
+    const lines = [
+      { text: '> RITUAL_LOCK_SYSTEM v0.6.6.6', cls: 'white' },
+      { text: '> UNAUTHORIZED ACCESS DETECTED', cls: 'bright' },
+      { text: '> INTRUSION_ATTEMPTS: 3 / 3 ALLOWED', cls: '' },
+      { text: '', cls: '' },
+      { text: '> INITIATING EMERGENCY PROTOCOL 7734-OMEGA...', cls: 'warn' },
+      { text: '> NOTIFYING THE CONDUCTOR...', cls: 'dim-red' },
+      { text: '> SEALING CIPHER NODES [1/4]... DONE', cls: 'dim-red' },
+      { text: '> SEALING CIPHER NODES [2/4]... DONE', cls: 'dim-red' },
+      { text: '> SEALING CIPHER NODES [3/4]... DONE', cls: 'dim-red' },
+      { text: '> SEALING CIPHER NODES [4/4]... DONE', cls: 'dim-red' },
+      { text: '', cls: '' },
+      { text: '> BURNING SESSION MEMORY...', cls: '' },
+      { text: '> YOUR PRESENCE HAS BEEN LOGGED.', cls: 'bright' },
+      { text: '> YOUR FREQUENCY HAS BEEN RECORDED.', cls: 'bright' },
+      { text: '> HE IS ALREADY LISTENING.', cls: 'bright' },
+      { text: '', cls: '' },
+      { text: '> TERMINATING NODE_7734 IN 3...', cls: 'warn' },
+      { text: '> TERMINATING NODE_7734 IN 2...', cls: 'warn' },
+      { text: '> TERMINATING NODE_7734 IN 1...', cls: 'warn' },
+      { text: '', cls: '' },
+      { text: '> SYSTEM SHUTDOWN COMPLETE.', cls: 'dim-red' },
+    ];
+
+    const terminal = document.getElementById('shutdown-terminal');
+    terminal.innerHTML = '';
+
+    lines.forEach((lineData, i) => {
+      const el = document.createElement('span');
+      el.className = 'sd-line' + (lineData.cls ? ' ' + lineData.cls : '');
+      el.textContent = lineData.text || '\u00A0';
+      terminal.appendChild(el);
+    });
+
+    // Stagger lines in
+    const lineEls = terminal.querySelectorAll('.sd-line');
+    let delay = 120;
+    lineEls.forEach((el, i) => {
+      const d = delay;
+      setTimeout(() => el.classList.add('show'), d);
+      // countdown lines get longer pauses
+      if (i >= 16 && i <= 18) delay += 900;
+      else delay += i < 4 ? 180 : 140;
+    });
+
+    // Progress bar starts after a bit
+    setTimeout(() => {
+      const wrap = document.getElementById('sd-progress-wrap');
+      wrap.classList.add('show');
+      setTimeout(() => {
+        document.getElementById('sd-progress-fill').style.width = '100%';
+      }, 100);
+    }, delay - 200);
+
+    // Final message
+    setTimeout(() => {
+      document.getElementById('sd-final').classList.add('show');
+      // Low rumble
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = 40;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.5);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 4);
+      } catch(e) {}
+      // Fade everything to black after a few more seconds
+      setTimeout(() => {
+        screen.style.transition = 'opacity 2s ease';
+        screen.style.opacity = '0';
+        setTimeout(() => {
+          screen.style.opacity = '1';
+          screen.style.transition = '';
+          // Replace with dead black screen — truly locked out
+          screen.innerHTML = '<div style="font-family:Share Tech Mono,monospace;font-size:12px;color:#1a0000;letter-spacing:0.3em;text-align:center;user-select:none;">SESSION_TERMINATED</div>';
+        }, 2000);
+      }, 4000);
+    }, delay + 3200);
+  }
+
+  // ── AMBIENT BACKGROUND PULSES ──
+  function ambientHum() {
+    try {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 55 + Math.random() * 10;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 0.5);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 3.1);
+    } catch(e) {}
+  }
+  // Trigger ambient hum every 8s if audioCtx is alive
+  setInterval(() => { if(audioCtx) ambientHum(); }, 8000);
+</script>
+</body>
+</html>
