@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Lives Corporation – Executive Personnel File</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg-deep:      #0a0d12;
+    --bg-card:      #0e1420;
+    --bg-panel:     #111827;
+    --border-dim:   #1e2d45;
+    --border-glow:  #1e4a7a;
+    --accent-blue:  #1e6bbf;
+    --accent-cyan:  #38bdf8;
+    --accent-red:   #e11d48;
+    --accent-amber: #f59e0b;
+    --text-primary: #cfe0f5;
+    --text-dim:     #6b8aaa;
+    --text-label:   #38bdf8;
+    --header-bg:    #091220;
+    --stripe-odd:   #0e1a2a;
+    --stripe-even:  #0a1220;
+    --omega-red:    #c0162a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  /* ── SCANLINES OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .file-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid var(--border-glow);
+    background: var(--bg-card);
+    box-shadow:
+      0 0 40px rgba(30, 107, 191, 0.15),
+      0 0 2px rgba(56, 189, 248, 0.4) inset;
+  }
+
+  /* ── CORP HEADER ── */
+  .corp-header {
+    background: var(--header-bg);
+    border-bottom: 2px solid var(--accent-blue);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .corp-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  }
+
+  .corp-logo {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--accent-blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a1a2e;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  }
+  .corp-logo svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .corp-title-block { flex: 1; }
+  .corp-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+  }
+  .corp-subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent-cyan);
+    margin-top: 2px;
+  }
+
+  /* ── FILE META BAR ── */
+  .file-meta {
+    background: #080e18;
+    border-bottom: 1px solid var(--border-dim);
+    padding: 10px 28px;
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+  }
+  .file-meta .meta-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .file-meta .meta-label { color: var(--text-dim); }
+  .file-meta .meta-value { color: var(--text-primary); }
+  .classification-badge {
+    margin-left: auto;
+    background: rgba(224, 29, 72, 0.15);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 3px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse-red 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 6px rgba(224, 29, 72, 0.3); }
+    50%       { box-shadow: 0 0 14px rgba(224, 29, 72, 0.6); }
+  }
+
+  /* ── MAIN BODY ── */
+  .file-body {
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* ── SECTION CARD ── */
+  .card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-dim);
+    border-radius: 2px;
+  }
+  .card.full-width { grid-column: 1 / -1; }
+
+  .card-header {
+    background: linear-gradient(90deg, var(--accent-blue), #0e2a50);
+    padding: 7px 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e0f0ff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-header::before {
+    content: '//';
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent-cyan);
+    font-size: 11px;
+    opacity: 0.8;
+  }
+  .card-body { padding: 14px; }
+
+  /* ── EMPLOYEE INFO + PHOTO ── */
+  .emp-info-section {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0;
+  }
+  .emp-info-section .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .photo-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-dim);
+    border-left: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-width: 180px;
+  }
+  .photo-frame {
+    width: 140px;
+    height: 160px;
+    border: 2px solid var(--accent-blue);
+    background: #060d18;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px var(--border-dim),
+      0 0 20px rgba(30, 107, 191, 0.3);
+    position: relative;
+  }
+  .photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 70%,
+      rgba(30, 107, 191, 0.25) 100%
+    );
+  }
+  /* Placeholder avatar SVG */
+  .photo-placeholder {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+    color: var(--accent-cyan);
+  }
+  .photo-name {
+    margin-top: 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .photo-id {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-cyan);
+    margin-top: 2px;
+  }
+
+  /* ── TABLE ROWS ── */
+  .info-table { width: 100%; border-collapse: collapse; }
+  .info-table tr:nth-child(odd)  td { background: var(--stripe-odd); }
+  .info-table tr:nth-child(even) td { background: var(--stripe-even); }
+  .info-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid rgba(30, 45, 69, 0.5);
+    vertical-align: middle;
+  }
+  .info-table .td-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    width: 40%;
+  }
+  .info-table .td-value {
+    color: var(--text-primary);
+    font-size: 13px;
+  }
+  .omega-badge {
+    display: inline-block;
+    background: rgba(192, 22, 42, 0.2);
+    border: 1px solid var(--omega-red);
+    color: #f87171;
+    padding: 1px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    animation: pulse-red 2.5s ease-in-out infinite;
+  }
+
+  /* ── PROSE TEXT ── */
+  .prose { font-size: 13px; color: var(--text-primary); line-height: 1.7; }
+  .prose p + p { margin-top: 10px; }
+
+  /* ── BULLET LIST ── */
+  .sl-list { list-style: none; padding: 0; }
+  .sl-list li {
+    padding: 5px 0 5px 18px;
+    position: relative;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(30, 45, 69, 0.3);
+    font-size: 13px;
+  }
+  .sl-list li:last-child { border-bottom: none; }
+  .sl-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-size: 10px;
+    top: 7px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { display: flex; flex-direction: column; gap: 2px; }
+  .tl-row {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(30, 45, 69, 0.4);
+    align-items: start;
+  }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-cyan);
+    padding-top: 1px;
+  }
+  .tl-desc { font-size: 13px; color: var(--text-primary); }
+
+  /* ── RATING ── */
+  .rating-block {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .rating-badge {
+    background: rgba(30, 107, 191, 0.15);
+    border: 2px solid var(--accent-blue);
+    padding: 12px 20px;
+    text-align: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(30, 107, 191, 0.2);
+  }
+  .rating-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .rating-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #38bdf8;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+  }
+  .board-comments { flex: 1; }
+  .board-comments .bc-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  /* ── PSYCH / INTERNAL ── */
+  .review-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .review-date span { color: var(--accent-cyan); }
+  .sub-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin: 10px 0 4px;
+  }
+
+  /* ── AWARDS ── */
+  .awards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .award-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(30, 107, 191, 0.08);
+    border: 1px solid var(--border-dim);
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .award-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent-blue), #0e2a50);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  /* ── CONFIDENTIAL ADDENDUM ── */
+  .card.confidential {
+    border-color: var(--omega-red);
+    box-shadow: 0 0 20px rgba(192, 22, 42, 0.15);
+  }
+  .card.confidential .card-header {
+    background: linear-gradient(90deg, #7f0f1e, #3d0a10);
+  }
+  .access-warning {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-red);
+    margin-bottom: 12px;
+    animation: pulse-red 2.5s ease-in-out infinite;
+  }
+  .redacted {
+    display: inline-block;
+    background: #1a0a0d;
+    border: 1px solid #4a1020;
+    color: #6b1525;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 2px 18px;
+    margin: 6px 0;
+    user-select: none;
+  }
+  .conf-prose { color: var(--text-primary); font-size: 13px; line-height: 1.7; }
+  .conf-prose p { margin-bottom: 8px; }
+  .assoc-files {
+    margin-top: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .assoc-files .af-label {
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+  .assoc-files .af-code {
+    display: block;
+    color: var(--accent-cyan);
+    padding: 2px 0;
+  }
+  .prohibited-note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--accent-red);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  /* ── FOOTER ── */
+  .file-footer {
+    border-top: 2px solid var(--border-dim);
+    background: #080e18;
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .status-active {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+  }
+  .footer-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.8;
+  }
+  .footer-meta span { color: var(--accent-cyan); }
+  .footer-corp {
+    font-family: 'Rajdhani', sans-serif;
+    text-align: right;
+  }
+  .footer-corp .fc-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+  }
+  .footer-corp .fc-dept {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .eof-bar {
+    background: #060c16;
+    border-top: 1px solid var(--border-dim);
+    text-align: center;
+    padding: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent-red);
+  }
+
+  /* ── GRID SEPARATOR ── */
+  .section-divider {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+    margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="file-wrapper">
+
+  <!-- CORPORATE HEADER -->
+  <header class="corp-header">
+    <div class="corp-logo">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,4 56,18 56,42 30,56 4,42 4,18" stroke="#38bdf8" stroke-width="2" fill="#060d18"/>
+        <polygon points="30,14 46,23 46,37 30,46 14,37 14,23" stroke="#1e6bbf" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <circle cx="30" cy="30" r="6" fill="#38bdf8" opacity="0.9"/>
+        <line x1="30" y1="14" x2="30" y2="22" stroke="#38bdf8" stroke-width="1.5"/>
+        <line x1="30" y1="38" x2="30" y2="46" stroke="#38bdf8" stroke-width="1.5"/>
+        <line x1="14" y1="23" x2="22" y2="27" stroke="#38bdf8" stroke-width="1.5"/>
+        <line x1="38" y1="33" x2="46" y2="37" stroke="#38bdf8" stroke-width="1.5"/>
+        <line x1="46" y1="23" x2="38" y2="27" stroke="#38bdf8" stroke-width="1.5"/>
+        <line x1="22" y1="33" x2="14" y2="37" stroke="#38bdf8" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="corp-title-block">
+      <div class="corp-name">Second Lives Corporation</div>
+      <div class="corp-subtitle">Executive Personnel File</div>
+    </div>
+  </header>
+
+  <!-- FILE META BAR -->
+  <div class="file-meta">
+    <div class="meta-item">
+      <span class="meta-label">FILE ID:</span>
+      <span class="meta-value">SL-EXE-0001</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">SYSTEM:</span>
+      <span class="meta-value">HR-EXEC-DATABASE</span>
+    </div>
+    <div class="classification-badge">⚠ Executive Access Only</div>
+  </div>
+
+  <!-- MAIN BODY GRID -->
+  <main class="file-body">
+
+    <!-- EMPLOYEE INFORMATION + PHOTO -->
+    <div class="card emp-info-section" style="grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:0;background:transparent;border:none;">
+      <div class="card" style="border-radius:2px 0 0 2px;">
+        <div class="card-header">Employee Information</div>
+        <div class="card-body" style="padding:0;">
+          <table class="info-table">
+            <tr>
+              <td class="td-label">Name</td>
+              <td class="td-value">Dr. Elias Kain</td>
+            </tr>
+            <tr>
+              <td class="td-label">Employee ID</td>
+              <td class="td-value">SL-0001</td>
+            </tr>
+            <tr>
+              <td class="td-label">Position</td>
+              <td class="td-value">Founder &amp; Chief Executive Scientist</td>
+            </tr>
+            <tr>
+              <td class="td-label">Department</td>
+              <td class="td-value">Executive Research Division</td>
+            </tr>
+            <tr>
+              <td class="td-label">Date of Hire</td>
+              <td class="td-value">January 7, 2000</td>
+            </tr>
+            <tr>
+              <td class="td-label">Status</td>
+              <td class="td-value" style="color:#4ade80;">Active</td>
+            </tr>
+            <tr>
+              <td class="td-label">Security Clearance</td>
+              <td class="td-value"><span class="omega-badge">Omega Level</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="photo-panel" style="border-radius:0 2px 2px 0;">
+        <div class="photo-frame">
+          <!-- Placeholder silhouette -->
+          <svg class="photo-placeholder" viewBox="0 0 80 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="40" cy="30" rx="20" ry="24"/>
+            <path d="M4 100 C4 70 76 70 76 100Z"/>
+          </svg>
+        </div>
+        <div class="photo-name">Dr. Elias Kain</div>
+        <div class="photo-id">SL-0001</div>
+      </div>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="card full-width">
+      <div class="card-header">Executive Summary</div>
+      <div class="card-body prose">
+        <p>Dr. Elias Kain is the founder of Second Lives Corporation and principal architect behind the company's memory preservation, regenerative medicine, and clone integration technologies.</p>
+        <p>His work established the foundation for modern neural reconstruction and memory retention systems, leading to rapid corporate expansion and the creation of Nova Crest City.</p>
+        <p>Dr. Kain remains the highest-ranking scientific authority within the corporation.</p>
+      </div>
+    </div>
+
+    <!-- EDUCATION & CREDENTIALS -->
+    <div class="card">
+      <div class="card-header">Education &amp; Credentials</div>
+      <div class="card-body">
+        <ul class="sl-list">
+          <li>Doctorate in Neuroscience</li>
+          <li>Doctorate in Genetic Engineering</li>
+          <li>Specialist Certification in Neural Mapping</li>
+          <li>Recipient of Multiple International Biotechnology Awards</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PSYCHOLOGICAL REVIEW -->
+    <div class="card">
+      <div class="card-header">Psychological Review</div>
+      <div class="card-body">
+        <div class="review-date">Review Date: <span>February 2010</span></div>
+        <div class="sub-label">Observations</div>
+        <ul class="sl-list">
+          <li>Subject demonstrates extreme dedication to ongoing research initiatives.</li>
+          <li>Recent evaluations indicate elevated stress levels and prolonged work periods.</li>
+          <li>Employee continues to devote substantial personal resources toward memory preservation projects.</li>
+        </ul>
+        <div class="sub-label">Recommendation</div>
+        <p class="prose" style="margin-top:4px;">Mandatory leave suggested. Recommendation declined by executive authority.</p>
+      </div>
+    </div>
+
+    <!-- CORPORATE HISTORY -->
+    <div class="card">
+      <div class="card-header">Corporate History</div>
+      <div class="card-body" style="padding: 14px 14px 10px;">
+        <div class="timeline">
+          <div class="tl-row"><span class="tl-year">2000</span><span class="tl-desc">Founded Second Lives Corporation.</span></div>
+          <div class="tl-row"><span class="tl-year">2002</span><span class="tl-desc">Developed first-generation Memory Retention Framework.</span></div>
+          <div class="tl-row"><span class="tl-year">2004</span><span class="tl-desc">Successfully demonstrated stable memory reconstruction in biological tissue.</span></div>
+          <div class="tl-row"><span class="tl-year">2006</span><span class="tl-desc">Oversaw Nova Crest Initiative development.</span></div>
+          <div class="tl-row"><span class="tl-year">2008</span><span class="tl-desc">Authorized expansion of advanced cloning research programs.</span></div>
+          <div class="tl-row"><span class="tl-year">2010</span><span class="tl-desc">Appointed Director of Nova Crest Scientific Operations.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERNAL NOTES -->
+    <div class="card">
+      <div class="card-header">Internal Notes</div>
+      <div class="card-body">
+        <ul class="sl-list">
+          <li>Executive staff report increased isolation from colleagues.</li>
+          <li>Employee frequently remains in laboratory facilities outside scheduled hours.</li>
+          <li>Several research initiatives have received personal authorization directly from Dr. Kain without board consultation.</li>
+          <li>No violations identified.</li>
+          <li style="color: var(--accent-amber);">Monitoring recommended.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MAJOR CONTRIBUTIONS -->
+    <div class="card">
+      <div class="card-header">Major Contributions</div>
+      <div class="card-body">
+        <ul class="sl-list">
+          <li>Memory Retention Core</li>
+          <li>Neural Reconstruction Platform</li>
+          <li>Clone Integration Therapy</li>
+          <li>Cognitive Preservation Systems</li>
+          <li>Regenerative Cellular Framework</li>
+          <li>Advanced Consciousness Mapping</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CORPORATE AWARDS -->
+    <div class="card">
+      <div class="card-header">Corporate Awards</div>
+      <div class="card-body">
+        <div class="awards-grid">
+          <div class="award-item"><div class="award-icon">🏆</div><span>Founder Excellence Award</span></div>
+          <div class="award-item"><div class="award-icon">🎖️</div><span>International Biotechnology Achievement Medal</span></div>
+          <div class="award-item"><div class="award-icon">🥇</div><span>Nova Crest Development Recognition</span></div>
+          <div class="award-item"><div class="award-icon">⭐</div><span>Scientific Innovation Award</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFORMANCE EVALUATION -->
+    <div class="card full-width">
+      <div class="card-header">Performance Evaluation</div>
+      <div class="card-body">
+        <div class="rating-block">
+          <div class="rating-badge">
+            <span class="rating-label">Overall Rating</span>
+            <span class="rating-value">EXCEPTIONAL</span>
+          </div>
+          <div class="board-comments">
+            <div class="bc-title">Board Comments:</div>
+            <ul class="sl-list">
+              <li>"Visionary leadership."</li>
+              <li>"Unmatched scientific expertise."</li>
+              <li>"Primary driver of corporate growth."</li>
+              <li>"Technological contributions exceed all projections."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIDENTIAL ADDENDUM -->
+    <div class="card confidential full-width">
+      <div class="card-header" style="letter-spacing:3px;">Confidential Addendum</div>
+      <div class="card-body">
+        <div class="access-warning">⚠ ACCESS LEVEL: OMEGA ONLY ⚠</div>
+        <p class="conf-prose">The following section has been partially redacted.</p>
+        <div class="redacted">[REDACTED]</div>
+        <p class="conf-prose">Employee continues private research regarding long-term memory persistence beyond biological death.</p>
+        <div class="redacted">[REDACTED]</div>
+        <p class="conf-prose">Project approval granted under Executive Authority.</p>
+        <div class="assoc-files">
+          <div class="af-label">Associated Files:</div>
+          <span class="af-code">SL-MRC-01</span>
+          <span class="af-code">SL-THETA-09</span>
+          <span class="af-code">SL-MEM-CORE</span>
+        </div>
+        <p class="prohibited-note">Further access prohibited without authorization.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="file-footer">
+    <div class="status-active">◉ ACTIVE</div>
+    <div class="footer-meta">
+      Last Updated: <span>June 30, 2010</span><br>
+      File ID: <span>SL-EXE-0001</span>
+    </div>
+    <div class="footer-corp">
+      <div class="fc-name">Second Lives Corporation</div>
+      <div class="fc-dept">Executive Human Resources Division</div>
+    </div>
+  </footer>
+
+  <div class="eof-bar">— END OF FILE —</div>
+
+</div>
+
+</body>
+</html>
